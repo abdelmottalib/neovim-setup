@@ -26,13 +26,13 @@ install_tool() {
             echo_color "Skipping $tool_name installation."
             return
         fi
+        rm -fr "$install_dir"
     fi
 
     echo_color "Downloading $tool_name..."
     curl -# -OL "$tool_url"
     tar xzf "$tool_file"
     rm "$tool_file"
-    rm -fr "$install_dir"
     mv "${tool_name}-"* "$install_dir"
     echo_color "$tool_name [installed]"
     echo "export PATH=\$PATH:\$HOME/bin/$install_dir" >> "$HOME/.zshrc"
