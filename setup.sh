@@ -1,4 +1,4 @@
-#!/bin/s#!/bin/sh
+#!/bin/sh
 
 # Function for echoing with color
 echo_color() {
@@ -19,7 +19,7 @@ if ! command -v nvim > /dev/null 2>&1; then
     curl -# -OL "$NVIM_URL"
     tar xzf "$NVIM_FILE"
     rm "$NVIM_FILE"
-    echo "export PATH=\$PATH:$HOME/nvim-macos/bin" >> "$HOME/.zshrc"
+    echo "export PATH=$PATH:$HOME/bin/nvim-macos/bin" >> "$HOME/.zshrc"
     echo_color "Neovim [installed]"
 fi
 
@@ -32,7 +32,7 @@ if ! command -v rg > /dev/null 2>&1; then
     tar xzf "$RG_FILE"
     rm "$RG_FILE"
     mv ripgrep-* rg_dir
-    echo "export PATH=\$PATH:$HOME/bin/rg_dir" >> "$HOME/.zshrc"
+    echo "export PATH=$PATH:$HOME/bin/rg_dir" >> "$HOME/.zshrc"
     echo_color "Ripgrep [installed]"
 fi
 
@@ -45,7 +45,7 @@ if ! command -v fd > /dev/null 2>&1; then
     tar xzf "$FD_FILE"
     rm "$FD_FILE"
     mv fd-* fd_dir
-    echo "export PATH=\$PATH:$HOME/bin/fd_dir" >> "$HOME/.zshrc"
+    echo "export PATH=$PATH:$HOME/bin/fd_dir" >> "$HOME/.zshrc"
     echo_color "fd [installed]"
 fi
 
@@ -59,10 +59,10 @@ fi
 echo_color "Installing gettext using brew to fix link error"
 curl -fsSL https://raw.githubusercontent.com/hakamdev/42homebrew/master/install.sh | zsh
 brew install gettext
-export DYLD_LIBRARY_PATH="$HOME/.brew/Cellar/gettext/0.22.3/lib"
+echo "export DYLD_LIBRARY_PATH=$HOME/.brew/Cellar/gettext/0.22.4/lib" >> $HOME/.zshrc
 echo_color "Installing astrovim"
 git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
 echo_color "Cloning from abdelmottalib astrovim user config"
-git clone -q https://github.com/konami2/user "$HOME/.config/nvim/lua"
+git clone -q https://github.com/konami2/user "$HOME/.config/nvim/lua/user"
 echo_color "Script completed."
 echo_color "Runing nvim, wait for it to complete installing astrovim plugins ..."
