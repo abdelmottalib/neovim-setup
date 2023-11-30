@@ -48,7 +48,27 @@ if ! command -v fd > /dev/null 2>&1; then
     echo "export PATH=$PATH:$HOME/bin/fd_dir" >> "$HOME/.zshrc"
     echo_color "fd [installed]"
 fi
+#Tmux
+TMUX_URL="https://github.com/tmux/tmux/releases/download/3.2/tmux-3.2.tar.gz"
+TMUX_FILE="tmux-3.2.tar.gz"
+if ! command -v tmux > /dev/null 2>&1; then
+    echo "Downloading tmux..."
+    curl -# -OL "$TMUX_URL"
+    tar xzf "$TMUX_FILE"
+    rm "$TMUX_FILE"
+    mv tmux-* tmux_dir
+    echo "export PATH=$PATH:$HOME/bin/tmux_dir" >> "$HOME/.zshrc"
+    echo_color "tmux [installed]"
+fi
 
+# Tmux Configuration
+TMUX_CONFIG_URL="https://github.com/konami2/tmux_config/blob/main/.tmux.conf"
+TMUX_CONFIG_FILE=".tmux.conf"
+if [ ! -f "$HOME/$TMUX_CONFIG_FILE" ]; then
+    echo "Downloading tmux configuration..."
+    curl -# -OL "$TMUX_CONFIG_URL" -o "$HOME/$TMUX_CONFIG_FILE"
+    echo_color "Tmux configuration added."
+fi
 # Existing nvim configuration
 if [[ -d "$HOME/.config/nvim" ]]; then
     mv "$HOME/.config/nvim" "$HOME/.config/old_nvim"
