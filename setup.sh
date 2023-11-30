@@ -78,7 +78,6 @@ if [ ! -f "$HOME/$TMUX_CONFIG_FILE" ]; then
 fi
 
 echo_color  "script complete"
-chmod +x setup.sh
 echo_color  "Sourcing zshrc"
 source $HOME/.zshrc
 
