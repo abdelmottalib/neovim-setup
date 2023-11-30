@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 # Function for echoing with color
 echo_color() {
