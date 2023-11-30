@@ -5,8 +5,6 @@ echo_color() {
     printf "\033[1;32m%s\033[0m\n" "$1"
 }
 
-
-
 # Ensure $HOME/bin exists
 [[ -d "$HOME/bin" ]] || mkdir "$HOME/bin"
 
@@ -22,7 +20,8 @@ install_tool() {
     local install_dir="${tool_name}_dir"
 
     if [ -d "$install_dir" ]; then
-        read -p "$tool_name is already installed. Do you want to reinstall it? (y/n): " reinstall
+        echo -n "$tool_name is already installed. Do you want to reinstall it? (y/n): "
+        read reinstall
         if [[ ! $reinstall =~ ^[Yy]$ ]]; then
             echo_color "Skipping $tool_name installation."
             return
@@ -33,9 +32,10 @@ install_tool() {
     curl -# -OL "$tool_url"
     tar xzf "$tool_file"
     rm "$tool_file"
-    rm -fr install_dir
+    rm -fr "$install_dir"
     mv "${tool_name}-"* "$install_dir"
     echo_color "$tool_name [installed]"
+    echo "export PATH=\$PATH:\$HOME/bin/$install_dir" >> "$HOME/.zshrc"
 }
 
 # Neovim
@@ -51,10 +51,10 @@ install_tool "rg" "$RG_URL" "$RG_FILE"
 # fd
 FD_URL="https://github.com/sharkdp/fd/releases/download/v8.4.0/fd-v8.4.0-x86_64-apple-darwin.tar.gz"
 FD_FILE="fd-v8.4.0-x86_64-apple-darwin.tar.gz"
-install_tool "fd" "$FD_URL" "$FD_FILE"
+install_tool "fd" "$FD_URL" "$FD_FILE"# Ask if the user wants to install Astrovim
 
-# Ask if the user wants to install Astrovim
-read -p "Do you want to install Astrovim? (y/n): " installAstrovim
+echo "Do you want to install Astrovim? (y/n): "
+read installAstrovim
 if [[ $installAstrovim =~ ^[Yy]$ ]]; then
     # Install Astrovim
     # Existing nvim configuration
@@ -81,9 +81,9 @@ fi
 
 
 # Exporting path
-if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
-    echo "export PATH=$PATH:$HOME/bin/" >> "$HOME/.zshrc"
-fi
+# if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+#     echo "export PATH=$PATH:$HOME/bin/" >> "$HOME/.zshrc"
+# fi
 
 # Installing brew and gettext
 echo_color "Installing gettext"
@@ -91,7 +91,8 @@ brew install gettext
 echo "export DYLD_LIBRARY_PATH=$HOME/.brew/Cellar/gettext/0.22.4/lib" >> $HOME/.zshrc
 
 # Ask if the user wants to install tmux
-read -p "Do you want to install tmux? (y/n): " installTmux
+echo "Do you want to install tmux? (y/n): "
+read  installTmux
 if [[ $installTmux =~ ^[Yy]$ ]]; then
     # Install tmux
     echo_color "Installing tmux..."
